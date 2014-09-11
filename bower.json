@@ -1,0 +1,12 @@
+{
+  "name": "workspace",
+  "version": "0.0.0",
+  "homepage": "https://github.com/codeguerilla/flipadelphia",
+  "authors": [
+    "codeguerilla <johnrbaur@gmail.com>"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "angular": "~1.2.24"
+  }
+}
