@@ -1,1 +1,4 @@
-.tile {{id}}
+.tile
+    div(ng-bind="tile.name")
+    h5(style="color: red" ng-bind="tile.start" ng-if="tile.start")
+    h5(style="color: blue" ng-bind="tile.relic" ng-if="tile.relic")
