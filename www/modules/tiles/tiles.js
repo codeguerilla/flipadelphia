@@ -6,7 +6,9 @@ angular.module('tiles', [])
         restrict: "A",
         templateUrl: "modules/tiles/tile.html",
         scope: {
-            tile: "="
+            tile: "=",
+            x: "@",
+            y: "@"
         }
     }
 });

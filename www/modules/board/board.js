@@ -1,18 +1,7 @@
 "use strict";
 
 angular.module('board', [])
-.controller('BoardCtrl', function($scope, TILESET) {
-    $scope.waterLevel = 1;
-    $scope.tiles = TILESET;
-    $scope.tileCards = {
-        deck: _.shuffle(_.pluck(TILESET, "id")),
-        discard: []
-    }
-
-    $scope.shuffleTiles = function () {
-        $scope.tiles = _.shuffle(TILESET);
-    }
-    
+.controller('BoardCtrl', function($scope, TILESET, player) {
     $scope.drawTileCard = function () {
         var i, drawCount, drawnTile, card;
         
@@ -28,14 +17,27 @@ angular.module('board', [])
                 $scope.tileCards.discard.push(card);
             }
         }
-    }
+    };
     
     //TODO : take this off $scope
     $scope.resetTileCardDeck = function () {
         var deck = $scope.tileCards.deck;
         deck.push.apply(deck, _.shuffle($scope.tileCards.discard));
         $scope.tileCards.discard = [];
-    }
+    };
+    
+    $scope.startGame = function (numPlayers) {
+        $scope.waterLevel = 1;
+        $scope.tiles = _.shuffle(TILESET);
+        _.forEach($scope.tiles, function(t) {
+            t.level = "";
+        });
+        $scope.tileCards = {
+            deck: _.shuffle(_.pluck(TILESET, "id")),
+            discard: []
+        };
+        $scope.players = player.startGame(numPlayers);
+    };
 })
 .directive('gameBoard', function() {
     return {
