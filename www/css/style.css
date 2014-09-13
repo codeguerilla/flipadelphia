@@ -14,3 +14,9 @@
 .tile-lost {
     background-color: black;
 }
+.p1 {
+    width: 10px;
+    height: 10px;
+    float: right;
+    background-color: red;
+}

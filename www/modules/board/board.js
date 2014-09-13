@@ -27,16 +27,19 @@ angular.module('board', [])
     };
     
     $scope.startGame = function (numPlayers) {
+        $scope.players = player.startGame(numPlayers);
         $scope.waterLevel = 1;
         $scope.tiles = _.shuffle(TILESET);
         _.forEach($scope.tiles, function(t) {
             t.level = "";
+            if (t.start === 1 && _.find($scope.players, {"id": 1})) {
+                t.token = "p1";
+            }
         });
         $scope.tileCards = {
             deck: _.shuffle(_.pluck(TILESET, "id")),
             discard: []
         };
-        $scope.players = player.startGame(numPlayers);
     };
 })
 .directive('gameBoard', function() {
