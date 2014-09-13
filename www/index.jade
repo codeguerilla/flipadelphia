@@ -1,8 +1,9 @@
 html(ng-app="flipadelphia")
 head
     link(href="css/style.css" rel="stylesheet")
-body(ng-controller="MainCtrl")
+body()
     div(game-board)
 
     script(src="lib/angular/angular.js")
+    script(src="lib/lodash/dist/lodash.js")
     script(src="app.js")
