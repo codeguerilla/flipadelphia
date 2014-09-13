@@ -19,13 +19,13 @@ angular.module('board', [])
         drawCount = Math.ceil($scope.waterLevel / 2) + 1
         for (i = 0; i < drawCount; i++) {
             card = $scope.tileCards.deck.pop();
-            $scope.tileCards.discard.push(card);
             
             drawnTile = _.find($scope.tiles, {"id": card});
             if (drawnTile.level === "tile-flooded") {
                 drawnTile.level = "tile-lost";
             } else if (drawnTile.level !== "tile-lost") {
                 drawnTile.level = "tile-flooded";
+                $scope.tileCards.discard.push(card);
             }
         }
     }
