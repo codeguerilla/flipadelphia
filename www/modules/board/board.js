@@ -14,9 +14,16 @@ angular.module('board', [])
         drawnTile = _.find($scope.tiles, {"id": card});
         if (drawnTile.level === "tile-flooded") {
             drawnTile.level = "tile-lost";
-        } else {
+        } else if (drawnTile.level !== "tile-lost") {
             drawnTile.level = "tile-flooded";
         }
+    }
+    
+    //TODO : take this off $scope
+    $scope.resetTileCardDeck = function () {
+        var deck = $scope.tileCards.deck;
+        deck.push.apply(deck, _.shuffle($scope.tileCards.discard));
+        $scope.tileCards.discard = [];
     }
     
     $scope.tiles = TILESET;
