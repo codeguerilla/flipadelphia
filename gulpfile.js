@@ -14,13 +14,14 @@ gulp.task('jade', ['clean'], function() {
     .pipe(gulp.dest('www-build'))
 });
 
-gulp.task('js', ['clean'], function() {
-  gulp.src('www/**/*.js')
+gulp.task('static', ['clean'], function() {
+  gulp.src(['www/**/*.js', 'www/**/*.css'])
     .pipe(gulp.dest('www-build'))
 });
 
 gulp.task('watch', function() {
   gulp.watch(path + '/**/*.jade', ['jade']);
+  gulp.watch([path + '/**/*.js', path + '/**/*.css'], ['static']);
 });
 
-gulp.task('default', ['jade', 'js', 'watch']);
+gulp.task('default', ['jade', 'static', 'watch']);

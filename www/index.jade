@@ -1,7 +1,8 @@
 html(ng-app="flipadelphia")
 head
-body
-    h1 This is {{"my " + "application"}}
+    link(href="css/style.css" rel="stylesheet")
+body(ng-controller="MainCtrl")
+    div(game-board)
 
     script(src="lib/angular/angular.js")
     script(src="app.js")
