@@ -5,7 +5,25 @@ angular.module('board', [])
     $scope.shuffleTiles = function () {
         $scope.tiles = _.shuffle(TILESET);
     }
+    
+    $scope.drawTileCard = function () {
+        var drawnTile,
+            card = $scope.tileCards.deck.pop();
+        $scope.tileCards.discard.push(card);
+        
+        drawnTile = _.find($scope.tiles, {"id": card});
+        if (drawnTile.level === "tile-flooded") {
+            drawnTile.level = "tile-lost";
+        } else {
+            drawnTile.level = "tile-flooded";
+        }
+    }
+    
     $scope.tiles = TILESET;
+    $scope.tileCards = {
+        deck: _.shuffle(_.pluck(TILESET, "id")),
+        discard: []
+    }
 })
 .directive('gameBoard', function() {
     return {
@@ -30,7 +48,7 @@ angular.module('board', [])
     {
         id: 3,
         name: "3",
-        start: 1,
+        start: 3,
         relic: 0
     },
     {

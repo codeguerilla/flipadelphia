@@ -8,3 +8,9 @@
     height: 100px;
     border: 0px;
 }
+.tile-flooded {
+    background-color: blue;
+}
+.tile-lost {
+    background-color: black;
+}
