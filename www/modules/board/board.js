@@ -10,10 +10,8 @@ angular.module('board', [])
             card = $scope.tileCards.deck.pop();
             
             drawnTile = _.find($scope.tiles, {"id": card});
-            if (drawnTile.level === "tile-flooded") {
-                drawnTile.level = "tile-lost";
-            } else if (drawnTile.level !== "tile-lost") {
-                drawnTile.level = "tile-flooded";
+            drawnTile.level = drawnTile.level + 1;
+            if (drawnTile.level < 2) {
                 $scope.tileCards.discard.push(card);
             }
         }
@@ -31,7 +29,7 @@ angular.module('board', [])
         $scope.waterLevel = 1;
         $scope.tiles = _.shuffle(TILESET);
         _.forEach($scope.tiles, function(t) {
-            t.level = "";
+            t.level = 0;
             if (t.start === 1 && _.find($scope.players, {"id": 1})) {
                 t.token = "p1";
             }

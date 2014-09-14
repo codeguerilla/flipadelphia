@@ -9,6 +9,16 @@ angular.module('tiles', [])
             tile: "=",
             x: "@",
             y: "@"
+        },
+        link: function(scope, element) {
+            var levelClass = {
+                "0": "safe",
+                "1": "flooded",
+                "2": "sunk"
+            }
+            scope.$watch("tile.level", function(n) {
+                element.addClass(levelClass[n]);
+            })
         }
     }
 });

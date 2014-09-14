@@ -8,10 +8,10 @@
     height: 100px;
     border: 0px;
 }
-.tile-flooded {
+.flooded {
     background-color: blue;
 }
-.tile-lost {
+.sunk {
     background-color: black;
 }
 .p1 {
