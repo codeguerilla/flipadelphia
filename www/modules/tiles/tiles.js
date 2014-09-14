@@ -16,7 +16,8 @@ angular.module('tiles', [])
                 "1": "flooded",
                 "2": "sunk"
             }
-            scope.$watch("tile.level", function(n) {
+            scope.$watch("tile.level", function(n, o) {
+                element.removeClass(levelClass[o]);
                 element.addClass(levelClass[n]);
             })
         }
