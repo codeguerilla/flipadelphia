@@ -6,10 +6,19 @@ angular.module('players', [])
         currentTile: {},
         cards: []
     },
-    playerList = [];
+    playerList = [],
+    turn = {};
     
     return {
         playerList: playerList,
+        turn: turn,
+        resetTurn: function(playerId) {
+            turn = {
+                player: playerId,
+                phase: 1,
+                actions: 0
+            }
+        },
         startGame: function(numPlayers) {
             var i,
                 newPlayer;
@@ -18,6 +27,7 @@ angular.module('players', [])
                 newPlayer.id = i;
                 playerList.push(newPlayer);
             };
+            resetTurn(0);
         }
     };
 });
