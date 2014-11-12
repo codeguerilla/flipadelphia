@@ -8,7 +8,8 @@ angular.module('tiles', [])
         scope: {
             tile: "=",
             x: "@",
-            y: "@"
+            y: "@",
+            p: "="
         },
         link: function(scope, element) {
             var levelClass = {
@@ -16,6 +17,20 @@ angular.module('tiles', [])
                 "1": "flooded",
                 "2": "sunk"
             }
+            
+            scope.canMove = function() {
+                var result = false;
+                if (scope.p) {
+                    if (scope.p.currentTile.xVal === scope.x && Math.abs(scope.p.currentTile.yVal - scope.y) === 1) { result = true; }
+                    if (scope.p.currentTile.yVal === scope.y && Math.abs(scope.p.currentTile.xVal - scope.x) === 1) { result = true; } 
+                }
+                return result;
+            }
+            
+            scope.moveHere = function() {
+                alert("moving");
+            }
+            
             scope.$watch("tile", function(n, o) {
                 if (n && !o) {
                     scope.tile.xVal = scope.x;

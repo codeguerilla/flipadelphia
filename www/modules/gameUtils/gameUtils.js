@@ -13,7 +13,7 @@ angular.module('gameUtils', [])
         initPlayerList: function(numPlayers) {
             var i,
                 newPlayer;
-            for (i = 0; i <= numPlayers; i++) {
+            for (i = 1; i <= numPlayers; i++) {
                 newPlayer = angular.copy(p);
                 newPlayer.id = i;
                 playerList.push(newPlayer);
@@ -34,4 +34,4 @@ angular.module('gameUtils', [])
             }
         }
     };
-})
+});
