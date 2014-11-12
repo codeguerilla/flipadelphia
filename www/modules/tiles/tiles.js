@@ -1,15 +1,14 @@
 "use strict";
 
 angular.module('tiles', [])
-.directive('tile', function() {
+.directive('tile', function(fiTurns) {
     return {
         restrict: "A",
         templateUrl: "modules/tiles/tile.html",
         scope: {
             tile: "=",
             x: "@",
-            y: "@",
-            p: "="
+            y: "@"
         },
         link: function(scope, element) {
             var levelClass = {
@@ -19,10 +18,11 @@ angular.module('tiles', [])
             }
             
             scope.canMove = function() {
-                var result = false;
-                if (scope.p) {
-                    if (scope.p.currentTile.xVal === scope.x && Math.abs(scope.p.currentTile.yVal - scope.y) === 1) { result = true; }
-                    if (scope.p.currentTile.yVal === scope.y && Math.abs(scope.p.currentTile.xVal - scope.x) === 1) { result = true; } 
+                var result = false,
+                    p = fiTurns.currentPlayer;
+                if (p && p.currentTile) {
+                    if (p.currentTile.xVal === scope.x && Math.abs(p.currentTile.yVal - scope.y) === 1) { result = true; }
+                    if (p.currentTile.yVal === scope.y && Math.abs(p.currentTile.xVal - scope.x) === 1) { result = true; } 
                 }
                 return result;
             }
@@ -31,12 +31,12 @@ angular.module('tiles', [])
                 alert("moving");
             }
             
-            scope.$watch("tile", function(n, o) {
-                if (n && !o) {
+            scope.$watch("tile.id", function(n, o) {
+                if (n !== o) {
                     scope.tile.xVal = scope.x;
                     scope.tile.yVal = scope.y;
                 }
-            }, true);
+            });
             scope.$watch("tile.level", function(n, o) {
                 element.removeClass(levelClass[o]);
                 element.addClass(levelClass[n]);

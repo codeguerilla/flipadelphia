@@ -22,10 +22,12 @@ angular.module('gameUtils', [])
     };
 })
 .factory('fiTurns', function () {
-    var turn = {};
+    var turn = {},
+        currentPlayer;
     
     return {
         turn: turn,
+        currentPlayer: currentPlayer,
         resetTurn: function(playerId) {
             turn = {
                 player: playerId,
