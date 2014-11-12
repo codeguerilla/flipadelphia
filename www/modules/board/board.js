@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('board', [])
-.controller('BoardCtrl', function($scope, TILESET, fiPlayers, fiTurns) {
+.controller('BoardCtrl', function($scope, TILESET, fiPlayers, fiTiles) {
     $scope.drawTileCard = function () {
         var i, drawCount, drawnTile, card;
         
@@ -27,18 +27,10 @@ angular.module('board', [])
     $scope.startGame = function (numPlayers) {
         fiPlayers.initPlayerList(numPlayers);
         $scope.players = fiPlayers.playerList;
-        fiTurns.currentPlayer = $scope.players[0];
+        fiPlayers.currentPlayer = $scope.players[0];
         $scope.waterLevel = 1;
-        $scope.tiles = _.shuffle(TILESET);
-        _.forEach($scope.tiles, function(t) {
-            t.level = 0;
-            _.forEach($scope.players, function(p) {
-                if (t.start === p.id) {
-                    t.token = "p" + p.id;
-                    p.currentTile = t;
-                }
-            })
-        });
+        $scope.tiles = fiTiles.newTileset();
+        fiPlayers.drawPlayers($scope.tiles);
         $scope.tileCards = {
             deck: _.shuffle(_.pluck(TILESET, "id")),
             discard: []
