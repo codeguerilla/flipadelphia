@@ -27,7 +27,7 @@ angular.module('players', [])
                 newPlayer.id = i;
                 playerList.push(newPlayer);
             };
-            resetTurn(0);
+            this.resetTurn(0);
         }
     };
 });
