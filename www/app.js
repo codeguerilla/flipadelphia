@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module('flipadelphia', ['board', 'tiles', 'players'])
+angular.module('flipadelphia', ['board', 'tiles', 'gameUtils'])
 .constant('TILESET', [
     {
         id: 1,

@@ -1,25 +1,16 @@
 "use strict";
 
-angular.module('players', [])
+angular.module('gameUtils', [])
 .factory('fiPlayers', function () {
     var p = {
         currentTile: {},
         cards: []
     },
-    playerList = [],
-    turn = {};
+    playerList = [];
     
     return {
         playerList: playerList,
-        turn: turn,
-        resetTurn: function(playerId) {
-            turn = {
-                player: playerId,
-                phase: 1,
-                actions: 0
-            }
-        },
-        startGame: function(numPlayers) {
+        initPlayerList: function(numPlayers) {
             var i,
                 newPlayer;
             for (i = 0; i <= numPlayers; i++) {
@@ -27,7 +18,20 @@ angular.module('players', [])
                 newPlayer.id = i;
                 playerList.push(newPlayer);
             };
-            this.resetTurn(0);
         }
     };
-});
+})
+.factory('fiTurns', function () {
+    var turn = {};
+    
+    return {
+        turn: turn,
+        resetTurn: function(playerId) {
+            turn = {
+                player: playerId,
+                phase: 1,
+                actions: 0
+            }
+        }
+    };
+})

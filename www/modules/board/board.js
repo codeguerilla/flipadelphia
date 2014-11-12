@@ -25,7 +25,7 @@ angular.module('board', [])
     };
     
     $scope.startGame = function (numPlayers) {
-        fiPlayers.startGame(numPlayers);
+        fiPlayers.initPlayerList(numPlayers);
         $scope.players = fiPlayers.playerList;
         $scope.currentPlayer = 1;
         $scope.waterLevel = 1;
