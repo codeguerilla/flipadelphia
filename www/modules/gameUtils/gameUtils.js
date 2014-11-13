@@ -1,49 +1,46 @@
 "use strict";
 
 angular.module('gameUtils', [])
-.factory('fiPlayers', function () {
+.factory('fiGameUtils', function (TILESET) {
     var p = {
-        currentTile: {},
+        tile: {},
         cards: []
     },
-    currentPlayer,
+    tiles = _.shuffle(TILESET),
+    currentPlayerIndex,
     playerList = [];
     
-    return {
-        playerList: playerList,
-        currentPlayer: currentPlayer,
-        initPlayerList: function(numPlayers) {
-            var i,
-                newPlayer;
-            for (i = 1; i <= numPlayers; i++) {
-                newPlayer = angular.copy(p);
-                newPlayer.id = i;
-                playerList.push(newPlayer);
-            };
-        },
-        drawPlayers: function(tiles) {
-            _.forEach(tiles, function(t) {
-                t.level = 0;
-                _.forEach(playerList, function(p) {
-                    if (t.start === p.id) {
-                        t.token = "p" + p.id;
-                        p.currentTile = t;
-                    }
-                })
-            });
-        }
-    };
-})
-.factory('fiTiles', function(TILESET) {
-    var tiles = _.shuffle(TILESET);
+    function drawPlayers() {
+        _.forEach(tiles, function(t) {
+            t.level = 0;
+            _.forEach(playerList, function(p) {
+                if (t === p.tile) {
+                    t.token = "p" + p.id;
+                }
+            })
+        });
+    }
     
     return {
         tiles: tiles,
-        newTileset: function() {
-            tiles = _.shuffle(TILESET);
-            return tiles;
+        playerList: playerList,
+        currentPlayer: function() {
+            return playerList[currentPlayerIndex];
+        },
+        initGame: function(numPlayers) {
+            var i,
+                newPlayer;
+            this.tiles = _.shuffle(TILESET);
+            for (i = 1; i <= numPlayers; i++) {
+                newPlayer = angular.copy(p);
+                newPlayer.id = i;
+                newPlayer.tile = _.find(tiles, { "start": newPlayer.id });
+                playerList.push(newPlayer);
+            };
+            currentPlayerIndex = 0;
+            drawPlayers();
         }
-    }
+    };
 })
 .factory('fiTurns', function () {
     var turn = {};

@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('tiles', [])
-.directive('tile', function(fiPlayers, fiTiles) {
+.directive('tile', function(fiGameUtils) {
     return {
         restrict: "A",
         templateUrl: "modules/tiles/tile.html",
@@ -17,20 +17,21 @@ angular.module('tiles', [])
                 "2": "sunk"
             };
             
-            scope.canMove = function() {
+            scope.canMoveHere = function() {
                 var result = false,
-                    p = fiPlayers.currentPlayer;
-                if (p && p.currentTile) {
-                    if (p.currentTile.xVal === scope.x && Math.abs(p.currentTile.yVal - scope.y) === 1) { result = true; }
-                    if (p.currentTile.yVal === scope.y && Math.abs(p.currentTile.xVal - scope.x) === 1) { result = true; } 
+                    p = fiGameUtils.currentPlayer();
+                if (p && p.tile) {
+                    if (p.tile.xVal === scope.x && Math.abs(p.tile.yVal - scope.y) === 1) { result = true; }
+                    if (p.tile.yVal === scope.y && Math.abs(p.tile.xVal - scope.x) === 1) { result = true; } 
                 }
                 return result;
             };
             
             scope.moveHere = function() {
-                if (scope.canMove()) {
-                    fiPlayers.currentPlayer.currentTile = scope.tile;
-                    fiPlayers.drawPlayers(fiTiles.tiles);
+                if (scope.canMoveHere()) {
+                    fiGameUtils.currentPlayer().tile.token = "";
+                    fiGameUtils.currentPlayer().tile = scope.tile;
+                    fiGameUtils.currentPlayer().tile.token = "p" + fiGameUtils.currentPlayer().id;
                 }
             };
             
