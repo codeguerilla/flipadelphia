@@ -29,7 +29,6 @@ angular.module('board', [])
         $scope.players = fiGameUtils.playerList;
         $scope.waterLevel = 1;
         $scope.tiles = fiGameUtils.tiles;
-        fiGameUtils.drawPlayers();
         $scope.tileCards = {
             deck: _.shuffle(_.pluck(TILESET, "id")),
             discard: []

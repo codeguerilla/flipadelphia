@@ -10,12 +10,13 @@ angular.module('gameUtils', [])
     currentPlayerIndex,
     playerList = [];
     
-    function drawPlayers() {
+    function drawTiles() {
         _.forEach(tiles, function(t) {
             t.level = 0;
+            t.tokens = [];
             _.forEach(playerList, function(p) {
                 if (t === p.tile) {
-                    t.token = "p" + p.id;
+                    t.tokens.push("p" + p.id);
                 }
             })
         });
@@ -30,6 +31,7 @@ angular.module('gameUtils', [])
         initGame: function(numPlayers) {
             var i,
                 newPlayer;
+            playerList = [];
             this.tiles = _.shuffle(TILESET);
             for (i = 1; i <= numPlayers; i++) {
                 newPlayer = angular.copy(p);
@@ -38,7 +40,7 @@ angular.module('gameUtils', [])
                 playerList.push(newPlayer);
             };
             currentPlayerIndex = 0;
-            drawPlayers();
+            drawTiles();
         }
     };
 })

@@ -29,9 +29,10 @@ angular.module('tiles', [])
             
             scope.moveHere = function() {
                 if (scope.canMoveHere()) {
-                    fiGameUtils.currentPlayer().tile.token = "";
+                    var pToken = "p" + fiGameUtils.currentPlayer().id;
+                    fiGameUtils.currentPlayer().tile.tokens.pop(pToken);
                     fiGameUtils.currentPlayer().tile = scope.tile;
-                    fiGameUtils.currentPlayer().tile.token = "p" + fiGameUtils.currentPlayer().id;
+                    fiGameUtils.currentPlayer().tile.tokens.push(pToken);
                 }
             };
             
