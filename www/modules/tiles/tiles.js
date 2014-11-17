@@ -17,7 +17,7 @@ angular.module('tiles', [])
                 "2": "sunk"
             };
             
-            scope.canMoveHere = function() {
+            scope.isAdjacent = function() {
                 var result = false,
                     p = fiGameUtils.currentPlayer();
                 if (p && p.tile) {
@@ -27,6 +27,10 @@ angular.module('tiles', [])
                 return result;
             };
             
+            scope.canMoveHere = function() {
+                return scope.isAdjacent();
+            }
+            
             scope.moveHere = function() {
                 if (scope.canMoveHere()) {
                     var pToken = "p" + fiGameUtils.currentPlayer().id;
@@ -34,6 +38,16 @@ angular.module('tiles', [])
                     fiGameUtils.currentPlayer().tile = scope.tile;
                     fiGameUtils.currentPlayer().tile.tokens.push(pToken);
                 }
+            };
+            
+            scope.canShoreUp = function() {
+                return scope.tile && scope.tile.level === 1 && scope.isAdjacent();
+            };
+            
+            scope.shoreUp = function() {
+                if (scope.canShoreUp()) {
+                    scope.tile.level = 0;
+                };
             };
             
             scope.$watch("tile.id", function(n, o) {

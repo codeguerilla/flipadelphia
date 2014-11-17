@@ -3,4 +3,5 @@
     div(ng-class="tile.tokens")
     h5(style="color: red" ng-bind="tile.start" ng-if="tile.start")
     h5(style="color: blue" ng-bind="tile.relic" ng-if="tile.relic")
-    button(ng-click="moveHere()" ng-show="canMoveHere()") M
+    button(ng-click="moveHere()" ng-show="canMoveHere()") Move
+    button(ng-click="shoreUp()" ng-show="canShoreUp()") Shore
