@@ -28,7 +28,7 @@ angular.module('tiles', [])
             };
             
             scope.canMoveHere = function() {
-                return scope.isAdjacent() && scope.tile.level < 2;
+                return scope.isAdjacent() && !isFlooded(scope.tile.level);
             }
             
             scope.moveHere = function() {
@@ -50,6 +50,10 @@ angular.module('tiles', [])
                 };
             };
             
+            function isFlooded(level) {
+                return level > 1;
+            }
+            
             scope.$watch("tile.id", function(n, o) {
                 if (n !== o) {
                     scope.tile.xVal = scope.x;
@@ -59,7 +63,19 @@ angular.module('tiles', [])
             scope.$watch("tile.level", function(n, o) {
                 element.removeClass(levelClass[o]);
                 element.addClass(levelClass[n]);
+                
+                if (n && isFlooded(n)) {
+                    var sunkPlayers = fiGameUtils.playersOnTile(scope.tile.id);
+                    angular.forEach(sunkPlayers, function(player) {
+                        moveToShore(player);
+                    });
+                }
             });
+            
+            function moveToShore(player) {
+                var saveCurrentPlayer = fiGameUtils.currentPlayer();
+                //TODO: Give player options to move to shore, disable other game controls
+            }
         }
     }
 });

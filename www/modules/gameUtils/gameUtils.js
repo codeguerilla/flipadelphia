@@ -22,11 +22,21 @@ angular.module('gameUtils', [])
         });
     }
     
+    function playersOnTile(tileId) {
+        var players = [];
+        _.forEach(playerList, function(p) {
+            if (p.tile.id === tileId) {
+                players.push(p);
+            }
+        });
+        return players;
+    }
+    
     return {
         tiles: tiles,
         playerList: playerList,
         currentPlayer: function() {
-            return playerList[currentPlayerIndex];
+            return playerList[currentPlayerIndex] || {};
         },
         initGame: function(numPlayers) {
             var i,
@@ -41,7 +51,8 @@ angular.module('gameUtils', [])
             };
             currentPlayerIndex = 0;
             drawTiles();
-        }
+        },
+        playersOnTile: playersOnTile
     };
 })
 .factory('fiTurns', function () {
