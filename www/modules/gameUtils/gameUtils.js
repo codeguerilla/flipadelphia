@@ -18,10 +18,25 @@ angular.module('gameUtils', [])
                 if (t === p.tile) {
                     t.tokens.push("p" + p.id);
                 }
-            })
+            });
         });
     }
     
+    function initGame(numPlayers) {
+        var i,
+            newPlayer;
+        playerList = [];
+        this.tiles = _.shuffle(TILESET);
+        for (i = 1; i <= numPlayers; i++) {
+            newPlayer = angular.copy(p);
+            newPlayer.id = i;
+            newPlayer.tile = _.find(tiles, { "start": newPlayer.id });
+            playerList.push(newPlayer);
+        }
+        currentPlayerIndex = 0;
+        drawTiles();
+    }
+
     function playersOnTile(tileId) {
         var players = [];
         _.forEach(playerList, function(p) {
@@ -38,20 +53,7 @@ angular.module('gameUtils', [])
         currentPlayer: function() {
             return playerList[currentPlayerIndex] || {};
         },
-        initGame: function(numPlayers) {
-            var i,
-                newPlayer;
-            playerList = [];
-            this.tiles = _.shuffle(TILESET);
-            for (i = 1; i <= numPlayers; i++) {
-                newPlayer = angular.copy(p);
-                newPlayer.id = i;
-                newPlayer.tile = _.find(tiles, { "start": newPlayer.id });
-                playerList.push(newPlayer);
-            };
-            currentPlayerIndex = 0;
-            drawTiles();
-        },
+        initGame: initGame,
         playersOnTile: playersOnTile
     };
 })
@@ -65,7 +67,7 @@ angular.module('gameUtils', [])
                 player: playerId,
                 phase: 1,
                 actions: 0
-            }
+            };
         }
     };
 });

@@ -5,7 +5,7 @@ angular.module('board', [])
     $scope.drawTileCard = function () {
         var i, drawCount, drawnTile, card;
         
-        drawCount = Math.ceil($scope.waterLevel / 2) + 1
+        drawCount = Math.ceil($scope.waterLevel / 2) + 1;
         for (i = 0; i < drawCount; i++) {
             card = $scope.tileCards.deck.pop();
             

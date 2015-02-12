@@ -17,7 +17,7 @@ angular.module('tiles', [])
                 "2": "sunk"
             };
             
-            scope.isAdjacent = function() {
+            function isAdjacent() {
                 var result = false,
                     p = fiGameUtils.currentPlayer();
                 if (p && p.tile) {
@@ -27,9 +27,18 @@ angular.module('tiles', [])
                 return result;
             };
             
-            scope.canMoveHere = function() {
-                return scope.isAdjacent() && !isFlooded(scope.tile.level);
+            function isFlooded(level) {
+                return level > 1;
             }
+            
+            function moveToShore(player) {
+                var saveCurrentPlayer = fiGameUtils.currentPlayer();
+                //TODO: Give player options to move to shore, disable other game controls
+            }
+            
+            scope.canMoveHere = function() {
+                return isAdjacent() && !isFlooded(scope.tile.level);
+            };
             
             scope.moveHere = function() {
                 if (scope.canMoveHere()) {
@@ -41,18 +50,14 @@ angular.module('tiles', [])
             };
             
             scope.canShoreUp = function() {
-                return scope.tile && scope.tile.level === 1 && scope.isAdjacent();
+                return scope.tile && scope.tile.level === 1 && isAdjacent();
             };
             
             scope.shoreUp = function() {
                 if (scope.canShoreUp()) {
                     scope.tile.level = 0;
-                };
+                }
             };
-            
-            function isFlooded(level) {
-                return level > 1;
-            }
             
             scope.$watch("tile.id", function(n, o) {
                 if (n !== o) {
@@ -71,11 +76,6 @@ angular.module('tiles', [])
                     });
                 }
             });
-            
-            function moveToShore(player) {
-                var saveCurrentPlayer = fiGameUtils.currentPlayer();
-                //TODO: Give player options to move to shore, disable other game controls
-            }
         }
-    }
+    };
 });
