@@ -1,6 +1,7 @@
-var gulp = require("gulp");
-var jade = require("gulp-jade");
-var del = require("del");
+var gulp = require("gulp"),
+    jade = require("gulp-jade"),
+    del = require("del"),
+    server = require("gulp-connect");
 
 var path = 'www';
 
@@ -25,3 +26,9 @@ gulp.task('watch', function() {
 });
 
 gulp.task('default', ['jade', 'static', 'watch']);
+
+gulp.task('connect', ['watch'], function() {
+    server.server({
+        root: "www-build"
+    });
+})
