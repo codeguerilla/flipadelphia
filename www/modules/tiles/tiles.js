@@ -28,7 +28,7 @@ angular.module('tiles', [])
             };
             
             scope.canMoveHere = function() {
-                return scope.isAdjacent();
+                return scope.isAdjacent() && scope.tile.level < 2;
             }
             
             scope.moveHere = function() {
