@@ -2,7 +2,7 @@
 "use strict";
 
 angular.module('board', [])
-.controller('BoardCtrl', function($scope, TILESET, fiGameUtils, fiTurns) {
+.controller('BoardCtrl', function($scope, TILESET, PHASE, fiGameUtils, fiTurns) {
     $scope.drawTileCards = function () {
         var i, drawCount, drawnTile, card;
         
@@ -35,8 +35,8 @@ angular.module('board', [])
         };
     };
     
-    $scope.$watch(function() { return fiTurns.getTurn().phase; }, function (phase, old) {
-        if (phase === 2 && phase !== old) {
+    $scope.$watch(function() { return fiTurns.getTurn().phase; }, function (turnPhase) {
+        if (turnPhase === PHASE.FLOOD) {
             $scope.drawTileCards();
             fiGameUtils.gotoNextPlayer();
         }

@@ -2,7 +2,7 @@
 "use strict";
 
 angular.module('tiles', [])
-.directive('tile', function(fiGameUtils, fiTurns) {
+.directive('tile', function(PHASE, fiGameUtils, fiTurns) {
     return {
         restrict: "A",
         templateUrl: "modules/tiles/tile.html",
@@ -32,13 +32,17 @@ angular.module('tiles', [])
                 return level > 1;
             }
             
+            function isActionPhase() {
+                return fiTurns.getTurn().phase === PHASE.ACTION;
+            }
+            
             function moveToShore(player) {
                 var saveCurrentPlayer = fiGameUtils.currentPlayer();
                 //TODO: Give player options to move to shore, disable other game controls
             }
             
             scope.canMoveHere = function() {
-                return fiTurns.isActionPhase() && isAdjacent() && !isFlooded(scope.tile.level);
+                return isActionPhase() && isAdjacent() && !isFlooded(scope.tile.level);
             };
             
             scope.moveHere = function() {
@@ -52,7 +56,7 @@ angular.module('tiles', [])
             };
             
             scope.canShoreUp = function() {
-                return fiTurns.isActionPhase() && scope.tile && scope.tile.level === 1 && isAdjacent();
+                return isActionPhase() && scope.tile && scope.tile.level === 1 && isAdjacent();
             };
             
             scope.shoreUp = function() {

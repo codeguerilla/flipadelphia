@@ -147,4 +147,9 @@ angular.module('flipadelphia', ['board', 'tiles', 'gameUtils'])
         start: 0,
         relic: 0
     }
-]);
+])
+.constant('PHASE', {
+    ACTION: 1,
+    RESOURCE: 2,
+    FLOOD: 3
+});

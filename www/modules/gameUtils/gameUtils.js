@@ -70,14 +70,14 @@ angular.module('gameUtils', [])
         playersOnTile: playersOnTile
     };
 })
-.factory('fiTurns', function () {
+.factory('fiTurns', function (PHASE) {
     var turn = {},
         maxActions = 2;
     
     function resetTurn(playerId) {
         turn = {
             player: playerId,
-            phase: 1,
+            phase: PHASE.ACTION,
             actions: 0
         };
     }
@@ -85,18 +85,13 @@ angular.module('gameUtils', [])
     function addAction() {
         turn.actions += 1;
         if (turn.actions === maxActions) {
-            turn.phase = 2;
+            turn.phase = PHASE.FLOOD;
         }
-    }
-    
-    function isActionPhase() {
-        return turn.phase === 1;
     }
     
     return {
         getTurn: function() { return turn; },
         resetTurn: resetTurn,
-        addAction: addAction,
-        isActionPhase: isActionPhase
+        addAction: addAction
     };
 });
