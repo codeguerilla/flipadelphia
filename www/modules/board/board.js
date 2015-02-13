@@ -1,3 +1,4 @@
+/*global angular, _*/
 "use strict";
 
 angular.module('board', [])
@@ -8,7 +9,6 @@ angular.module('board', [])
         drawCount = Math.ceil($scope.waterLevel / 2) + 1;
         for (i = 0; i < drawCount; i++) {
             card = $scope.tileCards.deck.pop();
-            
             drawnTile = _.find($scope.tiles, {"id": card});
             drawnTile.level = drawnTile.level + 1;
             if (drawnTile.level < 2) {

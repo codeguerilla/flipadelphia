@@ -1,3 +1,4 @@
+/*global angular, _*/
 "use strict";
 
 angular.module('flipadelphia', ['board', 'tiles', 'gameUtils'])

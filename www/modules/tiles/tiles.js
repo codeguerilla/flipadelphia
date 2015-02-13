@@ -1,3 +1,4 @@
+/*global angular, _*/
 "use strict";
 
 angular.module('tiles', [])
@@ -25,7 +26,7 @@ angular.module('tiles', [])
                     if (p.tile.yVal === scope.y && Math.abs(p.tile.xVal - scope.x) === 1) { result = true; } 
                 }
                 return result;
-            };
+            }
             
             function isFlooded(level) {
                 return level > 1;

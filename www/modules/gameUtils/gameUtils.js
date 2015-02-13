@@ -1,3 +1,4 @@
+/*global angular, _*/
 "use strict";
 
 angular.module('gameUtils', [])
@@ -11,10 +12,10 @@ angular.module('gameUtils', [])
     playerList = [];
     
     function drawTiles() {
-        _.forEach(tiles, function(t) {
+        angular.forEach(tiles, function(t) {
             t.level = 0;
             t.tokens = [];
-            _.forEach(playerList, function(p) {
+            angular.forEach(playerList, function(p) {
                 if (t === p.tile) {
                     t.tokens.push("p" + p.id);
                 }
@@ -39,7 +40,7 @@ angular.module('gameUtils', [])
 
     function playersOnTile(tileId) {
         var players = [];
-        _.forEach(playerList, function(p) {
+        angular.forEach(playerList, function(p) {
             if (p.tile.id === tileId) {
                 players.push(p);
             }
@@ -59,7 +60,6 @@ angular.module('gameUtils', [])
 })
 .factory('fiTurns', function () {
     var turn = {};
-    
     return {
         turn: turn,
         resetTurn: function(playerId) {
