@@ -3,7 +3,7 @@ table
         td.empty
             button(ng-click="startGame(2)") Start
         td.empty
-            | {{waterLevel}}
+            | {{"Water: " + waterLevel}}
         td(tile="tiles[0]" x="3" y="1")
         td(tile="tiles[1]" x="4" y="1")
         td.empty
@@ -47,4 +47,6 @@ table
         td(tile="tiles[23]" x="4" y="6")
         td.empty
         td.empty
-div(ng-bind="players() | json")
+div(ng-repeat="p in players()")
+    h4(ng-bind="p.id")
+    span(ng-bind="p.cards | json")
