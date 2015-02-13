@@ -23,6 +23,10 @@ angular.module('gameUtils', [])
         });
     }
     
+    function allPlayers() {
+        return playerList;
+    }
+    
     function currentPlayer() {
         return playerList[currentPlayerIndex] || {};
     }
@@ -63,7 +67,7 @@ angular.module('gameUtils', [])
     
     return {
         tiles: tiles,
-        playerList: playerList,
+        allPlayers: allPlayers,
         currentPlayer: currentPlayer,
         gotoNextPlayer: gotoNextPlayer,
         initGame: initGame,

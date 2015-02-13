@@ -3,10 +3,6 @@
 
 angular.module('board', [])
 .controller('BoardCtrl', function($scope, TILESET, TREASURES, PHASE, fiGameUtils, fiTurns) {
-    var waterLevel,
-        treasureCards = {},
-        tileCards = {};
-        
     function setupTreasureDeck() {
         var i, deck = [];
         angular.forEach(TREASURES, function(card) {
@@ -14,7 +10,7 @@ angular.module('board', [])
                 deck.push(card);
             }
         });
-        treasureCards = {
+        $scope.treasureCards = {
             deck: _.shuffle(deck),
             discard: []
         };
@@ -23,11 +19,15 @@ angular.module('board', [])
     function drawTreasureCards(player) {
         var i, card;
         for (i = 0; i < 2; i++) {
-            card = treasureCards.deck.pop();
+            if ($scope.treasureCards.deck.length === 0) {
+                $scope.treasureCards.deck = _.shuffle($scope.treasureCards.discard);
+                $scope.treasureCards.discard = [];
+            }
+            card = $scope.treasureCards.deck.pop();
             if (card.type === "WATERSRISE") {
-                waterLevel++;
+                $scope.waterLevel++;
                 resetTileCardDeck();
-                treasureCards.discard.push(card);
+                $scope.treasureCards.discard.push(card);
             } else {
                 player.cards.push(card);
             }
@@ -37,30 +37,30 @@ angular.module('board', [])
     function drawTileCards () {
         var i, drawCount, drawnTile, card;
         
-        drawCount = Math.ceil(waterLevel / 2) + 1;
+        drawCount = Math.ceil($scope.waterLevel / 2) + 1;
         for (i = 0; i < drawCount; i++) {
-            card = tileCards.deck.pop();
+            card = $scope.tileCards.deck.pop();
             drawnTile = _.find($scope.tiles, {"id": card});
             drawnTile.level = drawnTile.level + 1;
             if (drawnTile.level < 2) {
-                tileCards.discard.push(card);
+                $scope.tileCards.discard.push(card);
             }
         }
     }
     
     function resetTileCardDeck() {
-        var deck = tileCards.deck;
-        deck.push.apply(deck, _.shuffle(tileCards.discard));
-        tileCards.discard = [];
+        var deck = $scope.tileCards.deck;
+        deck.push.apply(deck, _.shuffle($scope.tileCards.discard));
+        $scope.tileCards.discard = [];
     }
     
     $scope.startGame = function (numPlayers) {
         fiGameUtils.initGame(numPlayers);
-        $scope.players = fiGameUtils.playerList;
-        waterLevel = 1;
+        $scope.players = fiGameUtils.allPlayers;
+        $scope.waterLevel = 1;
         $scope.tiles = fiGameUtils.tiles;
         setupTreasureDeck();
-        tileCards = {
+        $scope.tileCards = {
             deck: _.shuffle(_.pluck(TILESET, "id")),
             discard: []
         };
