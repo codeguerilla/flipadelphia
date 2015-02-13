@@ -58,7 +58,7 @@ angular.module('gameUtils', [])
         if (currentPlayerIndex === playerList.length) {
             currentPlayerIndex = 0;
         }
-        return currentPlayerIndex;
+        fiTurns.resetTurn(currentPlayer().id);
     }
     
     return {
@@ -89,9 +89,14 @@ angular.module('gameUtils', [])
         }
     }
     
+    function isActionPhase() {
+        return turn.phase === 1;
+    }
+    
     return {
         getTurn: function() { return turn; },
         resetTurn: resetTurn,
-        addAction: addAction
+        addAction: addAction,
+        isActionPhase: isActionPhase
     };
 });

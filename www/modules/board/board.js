@@ -2,8 +2,8 @@
 "use strict";
 
 angular.module('board', [])
-.controller('BoardCtrl', function($scope, TILESET, fiGameUtils) {
-    $scope.drawTileCard = function () {
+.controller('BoardCtrl', function($scope, TILESET, fiGameUtils, fiTurns) {
+    $scope.drawTileCards = function () {
         var i, drawCount, drawnTile, card;
         
         drawCount = Math.ceil($scope.waterLevel / 2) + 1;
@@ -34,6 +34,13 @@ angular.module('board', [])
             discard: []
         };
     };
+    
+    $scope.$watch(function() { return fiTurns.getTurn().phase; }, function (phase, old) {
+        if (phase === 2 && phase !== old) {
+            $scope.drawTileCards();
+            fiGameUtils.gotoNextPlayer();
+        }
+    })
 })
 .directive('gameBoard', function() {
     return {

@@ -18,10 +18,6 @@ angular.module('tiles', [])
                     "2": "sunk"
                 };
             
-            function isActionPhase() {
-                return fiTurns.getTurn().phase === 1;
-            }
-            
             function isAdjacent() {
                 var result = false,
                     p = fiGameUtils.currentPlayer();
@@ -42,7 +38,7 @@ angular.module('tiles', [])
             }
             
             scope.canMoveHere = function() {
-                return isActionPhase() && isAdjacent() && !isFlooded(scope.tile.level);
+                return fiTurns.isActionPhase() && isAdjacent() && !isFlooded(scope.tile.level);
             };
             
             scope.moveHere = function() {
@@ -56,7 +52,7 @@ angular.module('tiles', [])
             };
             
             scope.canShoreUp = function() {
-                return isActionPhase() && scope.tile && scope.tile.level === 1 && isAdjacent();
+                return fiTurns.isActionPhase() && scope.tile && scope.tile.level === 1 && isAdjacent();
             };
             
             scope.shoreUp = function() {
