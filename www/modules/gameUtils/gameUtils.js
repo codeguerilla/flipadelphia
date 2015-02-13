@@ -2,7 +2,7 @@
 "use strict";
 
 angular.module('gameUtils', [])
-.factory('fiGameUtils', function (TILESET) {
+.factory('fiGameUtils', function (TILESET, fiTurns) {
     var p = {
         tile: {},
         cards: []
@@ -23,6 +23,10 @@ angular.module('gameUtils', [])
         });
     }
     
+    function currentPlayer() {
+        return playerList[currentPlayerIndex] || {};
+    }
+    
     function initGame(numPlayers) {
         var i,
             newPlayer;
@@ -36,6 +40,7 @@ angular.module('gameUtils', [])
         }
         currentPlayerIndex = 0;
         drawTiles();
+        fiTurns.resetTurn(currentPlayer().id);
     }
 
     function playersOnTile(tileId) {
@@ -48,26 +53,45 @@ angular.module('gameUtils', [])
         return players;
     }
     
+    function gotoNextPlayer() {
+        currentPlayerIndex += 1;
+        if (currentPlayerIndex === playerList.length) {
+            currentPlayerIndex = 0;
+        }
+        return currentPlayerIndex;
+    }
+    
     return {
         tiles: tiles,
         playerList: playerList,
-        currentPlayer: function() {
-            return playerList[currentPlayerIndex] || {};
-        },
+        currentPlayer: currentPlayer,
+        gotoNextPlayer: gotoNextPlayer,
         initGame: initGame,
         playersOnTile: playersOnTile
     };
 })
 .factory('fiTurns', function () {
-    var turn = {};
-    return {
-        turn: turn,
-        resetTurn: function(playerId) {
-            turn = {
-                player: playerId,
-                phase: 1,
-                actions: 0
-            };
+    var turn = {},
+        maxActions = 2;
+    
+    function resetTurn(playerId) {
+        turn = {
+            player: playerId,
+            phase: 1,
+            actions: 0
+        };
+    }
+    
+    function addAction() {
+        turn.actions += 1;
+        if (turn.actions === maxActions) {
+            turn.phase = 2;
         }
+    }
+    
+    return {
+        getTurn: function() { return turn; },
+        resetTurn: resetTurn,
+        addAction: addAction
     };
 });

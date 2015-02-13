@@ -2,7 +2,7 @@
 "use strict";
 
 angular.module('tiles', [])
-.directive('tile', function(fiGameUtils) {
+.directive('tile', function(fiGameUtils, fiTurns) {
     return {
         restrict: "A",
         templateUrl: "modules/tiles/tile.html",
@@ -13,10 +13,14 @@ angular.module('tiles', [])
         },
         link: function(scope, element) {
             var levelClass = {
-                "0": "safe",
-                "1": "flooded",
-                "2": "sunk"
-            };
+                    "0": "safe",
+                    "1": "flooded",
+                    "2": "sunk"
+                };
+            
+            function isActionPhase() {
+                return fiTurns.getTurn().phase === 1;
+            }
             
             function isAdjacent() {
                 var result = false,
@@ -38,7 +42,7 @@ angular.module('tiles', [])
             }
             
             scope.canMoveHere = function() {
-                return isAdjacent() && !isFlooded(scope.tile.level);
+                return isActionPhase() && isAdjacent() && !isFlooded(scope.tile.level);
             };
             
             scope.moveHere = function() {
@@ -47,16 +51,18 @@ angular.module('tiles', [])
                     fiGameUtils.currentPlayer().tile.tokens.pop(pToken);
                     fiGameUtils.currentPlayer().tile = scope.tile;
                     fiGameUtils.currentPlayer().tile.tokens.push(pToken);
+                    fiTurns.addAction();
                 }
             };
             
             scope.canShoreUp = function() {
-                return scope.tile && scope.tile.level === 1 && isAdjacent();
+                return isActionPhase() && scope.tile && scope.tile.level === 1 && isAdjacent();
             };
             
             scope.shoreUp = function() {
                 if (scope.canShoreUp()) {
                     scope.tile.level = 0;
+                    fiTurns.addAction();
                 }
             };
             
