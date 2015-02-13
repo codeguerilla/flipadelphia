@@ -148,8 +148,45 @@ angular.module('flipadelphia', ['board', 'tiles', 'gameUtils'])
         relic: 0
     }
 ])
+.constant('TREASURES', [
+    {
+        type: "TREASURE",
+        value: 1,
+        count: 5
+    },
+    {
+        type: "TREASURE",
+        value: 2,
+        count: 5
+    },
+    {
+        type: "TREASURE",
+        value: 3,
+        count: 5
+    },
+    {
+        type: "TREASURE",
+        value: 4,
+        count: 5
+    },
+    {
+        type: "ACTION",
+        value: "H",
+        count: 3
+    },
+    {
+        type: "ACTION",
+        value: "S",
+        count: 2
+    },
+    {
+        type: "WATERSRISE",
+        value: "X",
+        count: 3
+    }
+])
 .constant('PHASE', {
     ACTION: 1,
-    RESOURCE: 2,
+    TREASURE: 2,
     FLOOD: 3
 });
