@@ -85,7 +85,7 @@ angular.module('gameUtils', [])
     function addAction() {
         turn.actions += 1;
         if (turn.actions === maxActions) {
-            turn.phase = PHASE.FLOOD;
+            turn.phase = PHASE.TREASURE;
         }
     }
     

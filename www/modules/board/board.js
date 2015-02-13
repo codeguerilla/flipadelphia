@@ -18,7 +18,20 @@ angular.module('board', [])
             deck: _.shuffle(deck),
             discard: []
         };
-        console.log(treasureCards);
+    }
+    
+    function drawTreasureCards(player) {
+        var i, card;
+        for (i = 0; i < 2; i++) {
+            card = treasureCards.deck.pop();
+            if (card.type === "WATERSRISE") {
+                waterLevel++;
+                resetTileCardDeck();
+                treasureCards.discard.push(card);
+            } else {
+                player.cards.push(card);
+            }
+        }
     }
   
     function drawTileCards () {
@@ -41,11 +54,6 @@ angular.module('board', [])
         tileCards.discard = [];
     }
     
-    function watersRise() {
-        waterLevel++;
-        resetTileCardDeck();
-    }
-    
     $scope.startGame = function (numPlayers) {
         fiGameUtils.initGame(numPlayers);
         $scope.players = fiGameUtils.playerList;
@@ -59,7 +67,8 @@ angular.module('board', [])
     };
     
     $scope.$watch(function() { return fiTurns.getTurn().phase; }, function (turnPhase) {
-        if (turnPhase === PHASE.FLOOD) {
+        if (turnPhase === PHASE.TREASURE) {
+            drawTreasureCards(fiGameUtils.currentPlayer());
             drawTileCards();
             fiGameUtils.gotoNextPlayer();
         }
