@@ -65,11 +65,16 @@ angular.module('gameUtils', [])
         fiTurns.resetTurn(currentPlayer().id);
     }
     
+    function gotoPlayer(id) {
+        currentPlayerIndex = _.findIndex(playerList, {id: id})
+    }
+    
     return {
         tiles: tiles,
         allPlayers: allPlayers,
         currentPlayer: currentPlayer,
         gotoNextPlayer: gotoNextPlayer,
+        gotoPlayer: gotoPlayer,
         initGame: initGame,
         playersOnTile: playersOnTile
     };

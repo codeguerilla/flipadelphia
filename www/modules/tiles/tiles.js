@@ -2,7 +2,7 @@
 "use strict";
 
 angular.module('tiles', [])
-.directive('tile', function(PHASE, fiGameUtils, fiTurns) {
+.directive('tile', function(PHASE, fiGameUtils, fiTurns, fiSwim, $q) {
     return {
         restrict: "A",
         templateUrl: "modules/tiles/tile.html",
@@ -16,6 +16,11 @@ angular.module('tiles', [])
                     "0": "safe",
                     "1": "flooded",
                     "2": "sunk"
+                },
+                swim = {
+                    defers: [],
+                    promises: [],
+                    counter: 0
                 };
             
             function isAdjacent() {
@@ -32,17 +37,36 @@ angular.module('tiles', [])
                 return level > 1;
             }
             
-            function isActionPhase() {
-                return fiTurns.getTurn().phase === PHASE.ACTION;
+            function isPhase(p) {
+                return fiTurns.getTurn().phase === p;
             }
             
-            function moveToShore(player) {
-                var saveCurrentPlayer = fiGameUtils.currentPlayer();
-                //TODO: Give player options to move to shore, disable other game controls
+            function moveToShore() {
+                var sunkPlayers = fiGameUtils.playersOnTile(scope.tile.id),
+                    swimPromises,
+                    saveCurrentPlayerId;
+                if (sunkPlayers.length > 0) {
+                    fiTurns.getTurn().phase = PHASE.SWIM;
+                    swimPromises = fiSwim.start(sunkPlayers);
+                    saveCurrentPlayerId = fiGameUtils.currentPlayer().id;
+                    
+                    fiGameUtils.gotoPlayer(fiSwim.players[0].id);
+                    angular.forEach(swimPromises, function(p) {
+                        p.then(function() {
+                            if (fiSwim.counter < fiSwim.players.length) {
+                                fiGameUtils.gotoPlayer(fiSwim.players[fiSwim.counter].id);
+                            }
+                        });
+                    });
+                    $q.all(swimPromises).then(function() {
+                        fiGameUtils.gotoPlayer(saveCurrentPlayerId);
+                    });
+                }
+                
             }
             
             scope.canMoveHere = function() {
-                return isActionPhase() && isAdjacent() && !isFlooded(scope.tile.level);
+                return (isPhase(PHASE.ACTION) || isPhase(PHASE.SWIM)) && isAdjacent() && !isFlooded(scope.tile.level);
             };
             
             scope.moveHere = function() {
@@ -51,12 +75,16 @@ angular.module('tiles', [])
                     fiGameUtils.currentPlayer().tile.tokens.pop(pToken);
                     fiGameUtils.currentPlayer().tile = scope.tile;
                     fiGameUtils.currentPlayer().tile.tokens.push(pToken);
-                    fiTurns.addAction();
+                    if (isPhase(PHASE.ACTION)) {
+                        fiTurns.addAction();
+                    } else if (isPhase(PHASE.SWIM)) {
+                        fiSwim.toShore();
+                    }
                 }
             };
             
             scope.canShoreUp = function() {
-                return isActionPhase() && scope.tile && scope.tile.level === 1 && isAdjacent();
+                return isPhase(PHASE.ACTION) && scope.tile && scope.tile.level === 1 && isAdjacent();
             };
             
             scope.shoreUp = function() {
@@ -77,12 +105,35 @@ angular.module('tiles', [])
                 element.addClass(levelClass[n]);
                 
                 if (n && isFlooded(n)) {
-                    var sunkPlayers = fiGameUtils.playersOnTile(scope.tile.id);
-                    angular.forEach(sunkPlayers, function(player) {
-                        moveToShore(player);
-                    });
+                    moveToShore();
                 }
             });
         }
+    };
+})
+.service("fiSwim", function($q) {
+    var that = this,
+        defers = [],
+        promises = [],
+        counter = 0;
+        
+    this.players = [];
+    
+    this.start = function(sunkPlayers) {
+        defers = [];
+        promises = [];
+        counter = 0;
+        that.players = sunkPlayers;
+        for(var i = 0; i < sunkPlayers.length; i++) {
+            var d = $q.defer();
+            defers.push(d);
+            promises.push(d.promise);
+        }
+        return promises;
+    };
+    
+    this.toShore = function() {
+        defers[counter].resolve();
+        counter++;
     };
 });

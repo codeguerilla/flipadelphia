@@ -188,5 +188,6 @@ angular.module('flipadelphia', ['board', 'tiles', 'gameUtils'])
 .constant('PHASE', {
     ACTION: 1,
     TREASURE: 2,
-    FLOOD: 3
+    FLOOD: 3,
+    SWIM: 4
 });
