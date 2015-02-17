@@ -25,3 +25,8 @@
 .p2 {
     background-color: green;
 }
+.card {
+    width: 75px;
+    height: 150px;
+    border: 2px solid navy;
+}
