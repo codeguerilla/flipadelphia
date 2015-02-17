@@ -9,7 +9,8 @@ angular.module('gameUtils', [])
     },
     tiles = _.shuffle(TILESET),
     currentPlayerIndex,
-    playerList = [];
+    playerList = [],
+    relics = [];
     
     function drawTiles() {
         angular.forEach(tiles, function(t) {
@@ -69,6 +70,15 @@ angular.module('gameUtils', [])
         currentPlayerIndex = _.findIndex(playerList, {id: id})
     }
     
+    function takeRelic(id) {
+        if (!_.includes(relics), id) {
+            relics.push(id);
+            if (relics.length === 4) {
+                alert("You win!");
+            }
+        }
+    }
+    
     return {
         tiles: tiles,
         allPlayers: allPlayers,
@@ -76,7 +86,8 @@ angular.module('gameUtils', [])
         gotoNextPlayer: gotoNextPlayer,
         gotoPlayer: gotoPlayer,
         initGame: initGame,
-        playersOnTile: playersOnTile
+        playersOnTile: playersOnTile,
+        takeRelic: takeRelic
     };
 })
 .factory('fiTurns', function (PHASE) {

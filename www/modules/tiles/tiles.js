@@ -107,8 +107,10 @@ angular.module('tiles', [])
             scope.takeRelic = function() {
                 var playerCards = fiGameUtils.currentPlayer().cards,
                     relicCard = { "type": "RELIC", "value": scope.tile.relic };
+                fiGameUtils.takeRelic(scope.tile.relic);
                 fiGameUtils.currentPlayer().cards = _.reject(playerCards, relicCard);
                 boardCtrl.discard(_.filter(playerCards, relicCard));
+                fiTurns.addAction();
             };
             
             scope.$watch("tile.id", function(n, o) {
