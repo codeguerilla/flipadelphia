@@ -1,7 +1,7 @@
 /*global angular, _*/
 "use strict";
 
-angular.module('flipadelphia', ['board', 'tiles', 'gameUtils'])
+angular.module('flipadelphia', ['board', 'tiles', 'cards', 'gameUtils'])
 .constant('TILESET', [
     {
         id: 1,
