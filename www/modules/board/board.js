@@ -54,6 +54,10 @@ angular.module('board', [])
         $scope.tileCards.discard = [];
     }
     
+    this.discard = function(cards) {
+        $scope.treasureCards.discard.push(cards);
+    };
+    
     $scope.startGame = function (numPlayers) {
         fiGameUtils.initGame(numPlayers);
         $scope.players = fiGameUtils.allPlayers;

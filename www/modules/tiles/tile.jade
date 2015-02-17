@@ -2,6 +2,7 @@
     div(ng-bind="tile.name")
     div(ng-repeat="token in tile.tokens")
         div(ng-class="token")
-    h3(style="color: blue" ng-bind="tile.relic" ng-if="tile.relic")
+    h3(ng-bind="tile.relic" ng-if="tile.relic")
     button(ng-click="moveHere()" ng-show="canMoveHere()") Move
     button(ng-click="shoreUp()" ng-show="canShoreUp()") Shore
+    button(ng-click="takeRelic()" ng-show="canTakeRelic()") Relic

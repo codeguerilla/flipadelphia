@@ -5,13 +5,14 @@ angular.module('tiles', [])
 .directive('tile', function(PHASE, fiGameUtils, fiTurns, fiSwim, $q) {
     return {
         restrict: "A",
+        require: "^gameBoard",
         templateUrl: "modules/tiles/tile.html",
         scope: {
             tile: "=",
             x: "@",
             y: "@"
         },
-        link: function(scope, element) {
+        link: function(scope, element, attrs, boardCtrl) {
             var levelClass = {
                     "0": "safe",
                     "1": "flooded",
@@ -97,6 +98,17 @@ angular.module('tiles', [])
                     scope.tile.level = 0;
                     fiTurns.addAction();
                 }
+            };
+            
+            scope.canTakeRelic = function() {
+                return onTile() && _.where(fiGameUtils.currentPlayer().cards, { "type": "RELIC", "value": scope.tile.relic }).length >= 4;
+            };
+            
+            scope.takeRelic = function() {
+                var playerCards = fiGameUtils.currentPlayer().cards,
+                    relicCard = { "type": "RELIC", "value": scope.tile.relic };
+                fiGameUtils.currentPlayer().cards = _.reject(playerCards, relicCard);
+                boardCtrl.discard(_.filter(playerCards, relicCard));
             };
             
             scope.$watch("tile.id", function(n, o) {

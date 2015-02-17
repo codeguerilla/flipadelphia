@@ -150,22 +150,22 @@ angular.module('flipadelphia', ['board', 'tiles', 'gameUtils'])
 ])
 .constant('TREASURES', [
     {
-        type: "TREASURE",
+        type: "RELIC",
         value: 1,
         count: 5
     },
     {
-        type: "TREASURE",
+        type: "RELIC",
         value: 2,
         count: 5
     },
     {
-        type: "TREASURE",
+        type: "RELIC",
         value: 3,
         count: 5
     },
     {
-        type: "TREASURE",
+        type: "RELIC",
         value: 4,
         count: 5
     },
