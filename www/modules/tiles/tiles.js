@@ -33,6 +33,10 @@ angular.module('tiles', [])
                 return result;
             }
             
+            function onTile() {
+                return fiGameUtils.currentPlayer().tile === scope.tile;
+            }
+            
             function isFlooded(level) {
                 return level > 1;
             }
@@ -59,6 +63,7 @@ angular.module('tiles', [])
                         });
                     });
                     $q.all(swimPromises).then(function() {
+                        fiTurns.getTurn().phase = PHASE.ACTION;
                         fiGameUtils.gotoPlayer(saveCurrentPlayerId);
                     });
                 }
@@ -84,7 +89,7 @@ angular.module('tiles', [])
             };
             
             scope.canShoreUp = function() {
-                return isPhase(PHASE.ACTION) && scope.tile && scope.tile.level === 1 && isAdjacent();
+                return isPhase(PHASE.ACTION) && scope.tile && scope.tile.level === 1 && (isAdjacent() || onTile());
             };
             
             scope.shoreUp = function() {
