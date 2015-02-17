@@ -12,12 +12,12 @@ gulp.task('clean', function(cb) {
 gulp.task('jade', ['clean'], function() {
   gulp.src('www/**/*.jade')
     .pipe(jade())
-    .pipe(gulp.dest('www-build'))
+    .pipe(gulp.dest('www-build'));
 });
 
 gulp.task('static', ['clean'], function() {
   gulp.src(['www/**/*.js', 'www/**/*.css'])
-    .pipe(gulp.dest('www-build'))
+    .pipe(gulp.dest('www-build'));
 });
 
 gulp.task('watch', function() {
@@ -27,8 +27,8 @@ gulp.task('watch', function() {
 
 gulp.task('default', ['jade', 'static', 'watch']);
 
-gulp.task('connect', ['watch'], function() {
+gulp.task('connect', ['default', 'watch'], function() {
     server.server({
         root: "www-build"
     });
-})
+});
