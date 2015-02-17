@@ -49,5 +49,5 @@ table
         td.empty
 div(ng-repeat="p in players")
     h4(ng-bind="p.id")
-    span(ng-repeat="card in p.cards")
+    span(ng-repeat="card in p.cards track by $index")
         treasure-card(card="card")
