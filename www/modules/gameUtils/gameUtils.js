@@ -2,7 +2,10 @@
 "use strict";
 
 angular.module('gameUtils', [])
-.service('fiGameUtils', function (TILESET, fiTurns) {
+.controller('GameController', function() {
+    
+})
+.service('fiPlayers', function (TILESET, fiTurns) {
     var that = this,
         p = {
             tile: {},
@@ -11,19 +14,6 @@ angular.module('gameUtils', [])
     currentPlayerIndex,
     relics = [];
     
-    function drawTiles() {
-        angular.forEach(that.tiles, function(t) {
-            t.level = 0;
-            t.tokens = [];
-            angular.forEach(that.playerList, function(p) {
-                if (t === p.tile) {
-                    t.tokens.push("p" + p.id);
-                }
-            });
-        });
-    }
-    
-    this.tiles = _.shuffle(TILESET);
     this.playerList = [];
     
     this.currentPlayer = function() {
@@ -34,15 +24,13 @@ angular.module('gameUtils', [])
         var i,
             newPlayer;
         that.playerList = [];
-        this.tiles = _.shuffle(TILESET);
         for (i = 1; i <= numPlayers; i++) {
             newPlayer = angular.copy(p);
             newPlayer.id = i;
-            newPlayer.tile = _.find(that.tiles, { "start": newPlayer.id });
+            newPlayer.tile = _.find(TILESET, { "start": newPlayer.id });
             that.playerList.push(newPlayer);
         }
         currentPlayerIndex = 0;
-        drawTiles();
         fiTurns.resetTurn(that.currentPlayer().id);
     };
 

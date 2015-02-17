@@ -2,7 +2,7 @@
 "use strict";
 
 angular.module('tiles', [])
-.directive('tile', function(PHASE, fiGameUtils, fiTurns, fiSwim, $q) {
+.directive('tile', function(PHASE, fiPlayers, fiTurns, fiSwim, $q) {
     return {
         restrict: "A",
         require: "^gameBoard",
@@ -21,7 +21,7 @@ angular.module('tiles', [])
             
             function isAdjacent() {
                 var result = false,
-                    p = fiGameUtils.currentPlayer();
+                    p = fiPlayers.currentPlayer();
                 if (p && p.tile) {
                     if (p.tile.xVal === scope.x && Math.abs(p.tile.yVal - scope.y) === 1) { result = true; }
                     if (p.tile.yVal === scope.y && Math.abs(p.tile.xVal - scope.x) === 1) { result = true; } 
@@ -30,7 +30,7 @@ angular.module('tiles', [])
             }
             
             function onTile() {
-                return fiGameUtils.currentPlayer().tile === scope.tile;
+                return fiPlayers.currentPlayer().tile === scope.tile;
             }
             
             function isFlooded(level) {
@@ -42,25 +42,25 @@ angular.module('tiles', [])
             }
             
             function moveToShore() {
-                var sunkPlayers = fiGameUtils.playersOnTile(scope.tile.id),
+                var sunkPlayers = fiPlayers.playersOnTile(scope.tile.id),
                     swimPromises,
                     saveCurrentPlayerId;
                 if (sunkPlayers.length > 0) {
                     fiTurns.turn.phase = PHASE.SWIM;
                     swimPromises = fiSwim.start(sunkPlayers);
-                    saveCurrentPlayerId = fiGameUtils.currentPlayer().id;
+                    saveCurrentPlayerId = fiPlayers.currentPlayer().id;
                     
-                    fiGameUtils.gotoPlayer(fiSwim.players[0].id);
+                    fiPlayers.gotoPlayer(fiSwim.players[0].id);
                     angular.forEach(swimPromises, function(p) {
                         p.then(function() {
                             if (fiSwim.counter < fiSwim.players.length) {
-                                fiGameUtils.gotoPlayer(fiSwim.players[fiSwim.counter].id);
+                                fiPlayers.gotoPlayer(fiSwim.players[fiSwim.counter].id);
                             }
                         });
                     });
                     $q.all(swimPromises).then(function() {
                         fiTurns.turn.phase = PHASE.ACTION;
-                        fiGameUtils.gotoPlayer(saveCurrentPlayerId);
+                        fiPlayers.gotoPlayer(saveCurrentPlayerId);
                     });
                 }
                 
@@ -72,10 +72,10 @@ angular.module('tiles', [])
             
             scope.moveHere = function() {
                 if (scope.canMoveHere()) {
-                    var pToken = "p" + fiGameUtils.currentPlayer().id;
-                    fiGameUtils.currentPlayer().tile.tokens.pop(pToken);
-                    fiGameUtils.currentPlayer().tile = scope.tile;
-                    fiGameUtils.currentPlayer().tile.tokens.push(pToken);
+                    var pToken = "p" + fiPlayers.currentPlayer().id;
+                    fiPlayers.currentPlayer().tile.tokens.pop(pToken);
+                    fiPlayers.currentPlayer().tile = scope.tile;
+                    fiPlayers.currentPlayer().tile.tokens.push(pToken);
                     if (isPhase(PHASE.ACTION)) {
                         fiTurns.addAction();
                     } else if (isPhase(PHASE.SWIM)) {
@@ -96,14 +96,14 @@ angular.module('tiles', [])
             };
             
             scope.canTakeRelic = function() {
-                return isPhase(PHASE.ACTION) && onTile() && _.where(fiGameUtils.currentPlayer().cards, { "type": "RELIC", "value": scope.tile.relic }).length >= 4;
+                return isPhase(PHASE.ACTION) && onTile() && _.where(fiPlayers.currentPlayer().cards, { "type": "RELIC", "value": scope.tile.relic }).length >= 4;
             };
             
             scope.takeRelic = function() {
-                var playerCards = fiGameUtils.currentPlayer().cards,
+                var playerCards = fiPlayers.currentPlayer().cards,
                     relicCard = { "type": "RELIC", "value": scope.tile.relic };
-                fiGameUtils.takeRelic(scope.tile.relic);
-                fiGameUtils.currentPlayer().cards = _.reject(playerCards, relicCard);
+                fiPlayers.takeRelic(scope.tile.relic);
+                fiPlayers.currentPlayer().cards = _.reject(playerCards, relicCard);
                 boardCtrl.discard(_.filter(playerCards, relicCard));
                 fiTurns.addAction();
             };

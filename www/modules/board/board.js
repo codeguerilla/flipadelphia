@@ -2,7 +2,20 @@
 "use strict";
 
 angular.module('board', [])
-.controller('BoardCtrl', function($scope, TILESET, TREASURES, PHASE, fiGameUtils, fiTurns) {
+.controller('BoardCtrl', function($scope, TILESET, TREASURES, PHASE, fiPlayers, fiTurns) {
+    function setupBoard() {
+        $scope.tiles = _.shuffle(TILESET);
+        angular.forEach($scope.tiles, function(t) {
+            t.level = 0;
+            t.tokens = [];
+            angular.forEach(fiPlayers.playerList, function(p) {
+                if (t === p.tile) {
+                    t.tokens.push("p" + p.id);
+                }
+            });
+        });
+    }
+        
     function setupTreasureDeck() {
         var i, deck = [];
         angular.forEach(TREASURES, function(card) {
@@ -59,10 +72,10 @@ angular.module('board', [])
     };
     
     $scope.startGame = function (numPlayers) {
-        fiGameUtils.initGame(numPlayers);
-        $scope.players = fiGameUtils.playerList;
+        fiPlayers.initGame(numPlayers);
+        $scope.players = fiPlayers.playerList;
+        setupBoard();
         $scope.waterLevel = 1;
-        $scope.tiles = fiGameUtils.tiles;
         setupTreasureDeck();
         $scope.tileCards = {
             deck: _.shuffle(_.pluck(TILESET, "id")),
@@ -72,9 +85,9 @@ angular.module('board', [])
     
     $scope.$watch(function() { return fiTurns.turn.phase; }, function (turnPhase) {
         if (turnPhase === PHASE.TREASURE) {
-            drawTreasureCards(fiGameUtils.currentPlayer());
+            drawTreasureCards(fiPlayers.currentPlayer());
             drawTileCards();
-            fiGameUtils.gotoNextPlayer();
+            fiPlayers.gotoNextPlayer();
         }
     });
 })
