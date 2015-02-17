@@ -17,11 +17,6 @@ angular.module('tiles', [])
                     "0": "safe",
                     "1": "flooded",
                     "2": "sunk"
-                },
-                swim = {
-                    defers: [],
-                    promises: [],
-                    counter: 0
                 };
             
             function isAdjacent() {
@@ -43,7 +38,7 @@ angular.module('tiles', [])
             }
             
             function isPhase(p) {
-                return fiTurns.getTurn().phase === p;
+                return fiTurns.turn.phase === p;
             }
             
             function moveToShore() {
@@ -51,7 +46,7 @@ angular.module('tiles', [])
                     swimPromises,
                     saveCurrentPlayerId;
                 if (sunkPlayers.length > 0) {
-                    fiTurns.getTurn().phase = PHASE.SWIM;
+                    fiTurns.turn.phase = PHASE.SWIM;
                     swimPromises = fiSwim.start(sunkPlayers);
                     saveCurrentPlayerId = fiGameUtils.currentPlayer().id;
                     
@@ -64,7 +59,7 @@ angular.module('tiles', [])
                         });
                     });
                     $q.all(swimPromises).then(function() {
-                        fiTurns.getTurn().phase = PHASE.ACTION;
+                        fiTurns.turn.phase = PHASE.ACTION;
                         fiGameUtils.gotoPlayer(saveCurrentPlayerId);
                     });
                 }
@@ -101,7 +96,7 @@ angular.module('tiles', [])
             };
             
             scope.canTakeRelic = function() {
-                return onTile() && _.where(fiGameUtils.currentPlayer().cards, { "type": "RELIC", "value": scope.tile.relic }).length >= 4;
+                return isPhase(PHASE.ACTION) && onTile() && _.where(fiGameUtils.currentPlayer().cards, { "type": "RELIC", "value": scope.tile.relic }).length >= 4;
             };
             
             scope.takeRelic = function() {

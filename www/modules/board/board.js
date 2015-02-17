@@ -60,7 +60,7 @@ angular.module('board', [])
     
     $scope.startGame = function (numPlayers) {
         fiGameUtils.initGame(numPlayers);
-        $scope.players = fiGameUtils.allPlayers;
+        $scope.players = fiGameUtils.playerList;
         $scope.waterLevel = 1;
         $scope.tiles = fiGameUtils.tiles;
         setupTreasureDeck();
@@ -70,7 +70,7 @@ angular.module('board', [])
         };
     };
     
-    $scope.$watch(function() { return fiTurns.getTurn().phase; }, function (turnPhase) {
+    $scope.$watch(function() { return fiTurns.turn.phase; }, function (turnPhase) {
         if (turnPhase === PHASE.TREASURE) {
             drawTreasureCards(fiGameUtils.currentPlayer());
             drawTileCards();
