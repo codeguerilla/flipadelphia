@@ -19,10 +19,10 @@
     height: 10px;
     float: right;
 }
-.p1 {
+.p1, .player1 {
     background-color: red;
 }
-.p2 {
+.p2, .player2 {
     background-color: green;
 }
 .card {

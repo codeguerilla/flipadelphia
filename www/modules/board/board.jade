@@ -50,6 +50,9 @@
                 td.empty
                 td.empty
     .col-md-4
+        div(ng-class="playerClass()")
+            | Current Player: 
+            span(ng-bind="currentPlayer()")
         div(ng-repeat="p in players")
             h4(ng-bind="p.id")
             span(ng-repeat="card in p.cards track by $index")

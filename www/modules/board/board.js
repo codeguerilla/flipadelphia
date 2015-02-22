@@ -49,6 +49,14 @@ angular.module('board', ['gameUtils.treasureDeck'])
         $scope.tileCards.discard = [];
     }
     
+    $scope.treasureCount = treasureDeck.getCount;
+    $scope.currentPlayer = function() {
+        return fiPlayers.currentPlayer().id;
+    };
+    $scope.playerClass = function() {
+        return "player" + fiPlayers.currentPlayer().id;
+    };
+    
     this.discard = function(cards) {
         $scope.treasureCards.discard.push(cards);
     };
@@ -59,7 +67,6 @@ angular.module('board', ['gameUtils.treasureDeck'])
         setupBoard();
         $scope.waterLevel = 1;
         treasureDeck.setup();
-        $scope.treasureCount = treasureDeck.getCount;
         $scope.tileCards = {
             deck: _.shuffle(_.pluck(TILESET, "id")),
             discard: []
