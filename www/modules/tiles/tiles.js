@@ -2,7 +2,7 @@
 "use strict";
 
 angular.module('tiles', [])
-.directive('tile', function(PHASE, fiPlayers, fiTurns, fiSwim, $q) {
+.directive('tile', function(PHASE, fiPlayers, fiTurns, fiSwim, $q, treasureDeck) {
     return {
         restrict: "A",
         require: "^gameBoard",
@@ -104,7 +104,7 @@ angular.module('tiles', [])
                     relicCard = { "type": "RELIC", "value": scope.tile.relic };
                 fiPlayers.takeRelic(scope.tile.relic);
                 fiPlayers.currentPlayer().cards = _.reject(playerCards, relicCard);
-                boardCtrl.discard(_.filter(playerCards, relicCard));
+                treasureDeck.discard(_.filter(playerCards, relicCard));
                 fiTurns.addAction();
             };
             

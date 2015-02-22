@@ -1,8 +1,8 @@
 /*global angular, _*/
 "use strict";
 
-angular.module('board', [])
-.controller('BoardCtrl', function($scope, TILESET, TREASURES, PHASE, fiPlayers, fiTurns) {
+angular.module('board', ['gameUtils.treasureDeck'])
+.controller('BoardCtrl', function($scope, TILESET, PHASE, fiPlayers, fiTurns, treasureDeck) {
     function setupBoard() {
         $scope.tiles = _.shuffle(TILESET);
         angular.forEach($scope.tiles, function(t) {
@@ -15,32 +15,15 @@ angular.module('board', [])
             });
         });
     }
-        
-    function setupTreasureDeck() {
-        var i, deck = [];
-        angular.forEach(TREASURES, function(card) {
-            for (i = 0; i <= card.count; i++) {
-                deck.push(card);
-            }
-        });
-        $scope.treasureCards = {
-            deck: _.shuffle(deck),
-            discard: []
-        };
-    }
     
     function drawTreasureCards(player) {
         var i, card;
         for (i = 0; i < 2; i++) {
-            if ($scope.treasureCards.deck.length === 0) {
-                $scope.treasureCards.deck = _.shuffle($scope.treasureCards.discard);
-                $scope.treasureCards.discard = [];
-            }
-            card = $scope.treasureCards.deck.pop();
+            card = treasureDeck.draw();
             if (card.type === "WATERSRISE") {
                 $scope.waterLevel++;
                 resetTileCardDeck();
-                $scope.treasureCards.discard.push(card);
+                treasureDeck.discard(card);
             } else {
                 player.cards.push(card);
             }
@@ -76,7 +59,8 @@ angular.module('board', [])
         $scope.players = fiPlayers.playerList;
         setupBoard();
         $scope.waterLevel = 1;
-        setupTreasureDeck();
+        treasureDeck.setup();
+        $scope.treasureCount = treasureDeck.getCount;
         $scope.tileCards = {
             deck: _.shuffle(_.pluck(TILESET, "id")),
             discard: []
