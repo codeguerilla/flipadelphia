@@ -2,8 +2,24 @@ html(ng-app="flipadelphia")
 head
     link(href="css/style.css" rel="stylesheet")
     link(href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet")
-body()
-    div(game-board)
+body(ng-controller="GameController as gc")
+    .row
+        .col-md-8
+            game-board(tiles="tiles")
+        .col-md-4
+            button(ng-click="startGame(2)") Start
+            div Water #[span(ng-bind="waterLevel")]
+            div Treasures: #[span(ng-bind="treasureCount().deck")]
+            div Discard: #[span(ng-bind="treasureCount().discard")]
+            div Tiles: #[span(ng-bind="tileCount().deck")]
+            div Discard: #[span(ng-bind="tileCount().discard")]
+            div(ng-class="playerClass()")
+                | Current Player: 
+                span(ng-bind="currentPlayer()")
+            div(ng-repeat="p in players")
+                h4(ng-bind="p.id")
+                span(ng-repeat="card in p.cards track by $index")
+                    treasure-card(card="card")
 
     script(src="lib/angular/angular.js")
     script(src="lib/lodash/dist/lodash.js")

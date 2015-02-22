@@ -1,59 +1,44 @@
-.row
-    .col-md-8
-        table
-            tr
-                td.empty
-                    button(ng-click="startGame(2)") Start
-                td.empty
-                    | {{"Water: " + waterLevel}}
-                td(tile="tiles[0]" x="3" y="1")
-                td(tile="tiles[1]" x="4" y="1")
-                td.empty
-                    | {{"Treasures: " + treasureCount().deck}}
-                    | {{"Discard: " + treasureCount().discard}}
-                td.empty
-                    | {{"Tiles: " + tileCards.deck.length}}
-                    | {{"Discard: " + tileCards.discard.length}}
-            tr
-                td.empty
-                td(tile="tiles[2]" x="2" y="2")
-                td(tile="tiles[3]" x="3" y="2")
-                td(tile="tiles[4]" x="4" y="2")
-                td(tile="tiles[5]" x="5" y="2")
-                td.empty
-            tr
-                td(tile="tiles[6]" x="1" y="3")
-                td(tile="tiles[7]" x="2" y="3")
-                td(tile="tiles[8]" x="3" y="3")
-                td(tile="tiles[9]" x="4" y="3")
-                td(tile="tiles[10]" x="5" y="3")
-                td(tile="tiles[11]" x="6" y="3")
-            tr
-                td(tile="tiles[12]" x="1" y="4")
-                td(tile="tiles[13]" x="2" y="4")
-                td(tile="tiles[14]" x="3" y="4")
-                td(tile="tiles[15]" x="4" y="4")
-                td(tile="tiles[16]" x="5" y="4")
-                td(tile="tiles[17]" x="6" y="4")
-            tr
-                td.empty
-                td(tile="tiles[18]" x="2" y="5")
-                td(tile="tiles[19]" x="3" y="5")
-                td(tile="tiles[20]" x="4" y="5")
-                td(tile="tiles[21]" x="5" y="5")
-                td.empty
-            tr
-                td.empty
-                td.empty
-                td(tile="tiles[22]" x="3" y="6")
-                td(tile="tiles[23]" x="4" y="6")
-                td.empty
-                td.empty
-    .col-md-4
-        div(ng-class="playerClass()")
-            | Current Player: 
-            span(ng-bind="currentPlayer()")
-        div(ng-repeat="p in players")
-            h4(ng-bind="p.id")
-            span(ng-repeat="card in p.cards track by $index")
-                treasure-card(card="card")
+table
+    tr
+        td.empty
+        td.empty
+        td(tile="tiles[0]" x="3" y="1")
+        td(tile="tiles[1]" x="4" y="1")
+        td.empty
+        td.empty
+    tr
+        td.empty
+        td(tile="tiles[2]" x="2" y="2")
+        td(tile="tiles[3]" x="3" y="2")
+        td(tile="tiles[4]" x="4" y="2")
+        td(tile="tiles[5]" x="5" y="2")
+        td.empty
+    tr
+        td(tile="tiles[6]" x="1" y="3")
+        td(tile="tiles[7]" x="2" y="3")
+        td(tile="tiles[8]" x="3" y="3")
+        td(tile="tiles[9]" x="4" y="3")
+        td(tile="tiles[10]" x="5" y="3")
+        td(tile="tiles[11]" x="6" y="3")
+    tr
+        td(tile="tiles[12]" x="1" y="4")
+        td(tile="tiles[13]" x="2" y="4")
+        td(tile="tiles[14]" x="3" y="4")
+        td(tile="tiles[15]" x="4" y="4")
+        td(tile="tiles[16]" x="5" y="4")
+        td(tile="tiles[17]" x="6" y="4")
+    tr
+        td.empty
+        td(tile="tiles[18]" x="2" y="5")
+        td(tile="tiles[19]" x="3" y="5")
+        td(tile="tiles[20]" x="4" y="5")
+        td(tile="tiles[21]" x="5" y="5")
+        td.empty
+    tr
+        td.empty
+        td.empty
+        td(tile="tiles[22]" x="3" y="6")
+        td(tile="tiles[23]" x="4" y="6")
+        td.empty
+        td.empty
+        

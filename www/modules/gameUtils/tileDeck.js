@@ -23,4 +23,11 @@ angular.module('gameUtils.tileDeck', [])
     this.discard = function(card) {
         discard.push(card);
     };
+    
+    this.getCount = function() {
+        return {
+            deck: deck.length,
+            discard: discard.length
+        };
+    };
 });

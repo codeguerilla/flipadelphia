@@ -5,14 +5,13 @@ angular.module('tiles', [])
 .directive('tile', function(PHASE, fiPlayers, fiTurns, fiSwim, $q, treasureDeck) {
     return {
         restrict: "A",
-        require: "^gameBoard",
         templateUrl: "modules/tiles/tile.html",
         scope: {
             tile: "=",
             x: "@",
             y: "@"
         },
-        link: function(scope, element, attrs, boardCtrl) {
+        link: function(scope, element) {
             var levelClass = {
                     "0": "safe",
                     "1": "flooded",
