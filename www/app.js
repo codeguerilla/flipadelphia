@@ -10,9 +10,10 @@ angular.module('flipadelphia',
     , 'gameUtils.tileDeck'
 ])
 .controller('GameController', function($scope, TILESET, PHASE, fiPlayers, fiTurns, treasureDeck, tileDeck) {
+    var vm = this;
     function setupBoard() {
-        $scope.tiles = _.shuffle(TILESET);
-        angular.forEach($scope.tiles, function(t) {
+        vm.tiles = _.shuffle(TILESET);
+        angular.forEach(vm.tiles, function(t) {
             t.level = 0;
             t.tokens = [];
             angular.forEach(fiPlayers.playerList, function(p) {
@@ -28,7 +29,7 @@ angular.module('flipadelphia',
         for (i = 0; i < 2; i++) {
             card = treasureDeck.draw();
             if (card.type === "WATERSRISE") {
-                $scope.waterLevel++;
+                vm.waterLevel++;
                 tileDeck.reset();
                 treasureDeck.discard(card);
             } else {
@@ -42,7 +43,7 @@ angular.module('flipadelphia',
         
         for (i = 0; i < drawCount; i++) {
             card = tileDeck.draw();
-            drawnTile = _.find($scope.tiles, {"id": card});
+            drawnTile = _.find(vm.tiles, {"id": card});
             drawnTile.level = drawnTile.level + 1;
             if (drawnTile.level < 2) {
                 tileDeck.discard(card);
@@ -50,24 +51,24 @@ angular.module('flipadelphia',
         }
     }
     
-    $scope.treasureCount = treasureDeck.getCount;
-    $scope.tileCount = tileDeck.getCount;
-    $scope.currentPlayer = function() {
+    this.treasureCount = treasureDeck.getCount;
+    this.tileCount = tileDeck.getCount;
+    this.currentPlayer = function() {
         return fiPlayers.currentPlayer().id;
     };
-    $scope.playerClass = function() {
+    this.playerClass = function() {
         return "player" + fiPlayers.currentPlayer().id;
     };
     
     this.discard = function(cards) {
-        $scope.treasureCards.discard.push(cards);
+        treasureDeck.discard(cards);
     };
     
-    $scope.startGame = function (numPlayers) {
+    this.startGame = function (numPlayers) {
         fiPlayers.initGame(numPlayers);
-        $scope.players = fiPlayers.playerList;
+        vm.players = fiPlayers.playerList;
         setupBoard();
-        $scope.waterLevel = 1;
+        vm.waterLevel = 1;
         treasureDeck.setup();
         tileDeck.setup();
         drawTileCards(6);
@@ -76,7 +77,7 @@ angular.module('flipadelphia',
     $scope.$watch(function() { return fiTurns.turn.phase; }, function (turnPhase) {
         if (turnPhase === PHASE.TREASURE) {
             drawTreasureCards(fiPlayers.currentPlayer());
-            drawTileCards(Math.ceil($scope.waterLevel / 2) + 1);
+            drawTileCards(Math.ceil(vm.waterLevel / 2) + 1);
             fiPlayers.gotoNextPlayer();
         }
     });

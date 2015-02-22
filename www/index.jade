@@ -5,18 +5,18 @@ head
 body(ng-controller="GameController as gc")
     .row
         .col-md-8
-            game-board(tiles="tiles")
+            game-board(tiles="gc.tiles")
         .col-md-4
-            button(ng-click="startGame(2)") Start
-            div Water #[span(ng-bind="waterLevel")]
-            div Treasures: #[span(ng-bind="treasureCount().deck")]
-            div Discard: #[span(ng-bind="treasureCount().discard")]
-            div Tiles: #[span(ng-bind="tileCount().deck")]
-            div Discard: #[span(ng-bind="tileCount().discard")]
-            div(ng-class="playerClass()")
+            button(ng-click="gc.startGame(2)") Start
+            div Water #[span(ng-bind="gc.waterLevel")]
+            div Treasures: #[span(ng-bind="gc.treasureCount().deck")]
+            div Discard: #[span(ng-bind="gc.treasureCount().discard")]
+            div Tiles: #[span(ng-bind="gc.tileCount().deck")]
+            div Discard: #[span(ng-bind="gc.tileCount().discard")]
+            div(ng-class="gc.playerClass()")
                 | Current Player: 
-                span(ng-bind="currentPlayer()")
-            div(ng-repeat="p in players")
+                span(ng-bind="gc.currentPlayer()")
+            div(ng-repeat="p in gc.players")
                 h4(ng-bind="p.id")
                 span(ng-repeat="card in p.cards track by $index")
                     treasure-card(card="card")
