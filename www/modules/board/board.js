@@ -30,10 +30,9 @@ angular.module('board', ['gameUtils.treasureDeck'])
         }
     }
   
-    function drawTileCards () {
-        var i, drawCount, drawnTile, card;
+    function drawTileCards (drawCount) {
+        var i, drawnTile, card;
         
-        drawCount = Math.ceil($scope.waterLevel / 2) + 1;
         for (i = 0; i < drawCount; i++) {
             card = $scope.tileCards.deck.pop();
             drawnTile = _.find($scope.tiles, {"id": card});
@@ -65,12 +64,13 @@ angular.module('board', ['gameUtils.treasureDeck'])
             deck: _.shuffle(_.pluck(TILESET, "id")),
             discard: []
         };
+        drawTileCards(6);
     };
     
     $scope.$watch(function() { return fiTurns.turn.phase; }, function (turnPhase) {
         if (turnPhase === PHASE.TREASURE) {
             drawTreasureCards(fiPlayers.currentPlayer());
-            drawTileCards();
+            drawTileCards(Math.ceil($scope.waterLevel / 2) + 1);
             fiPlayers.gotoNextPlayer();
         }
     });

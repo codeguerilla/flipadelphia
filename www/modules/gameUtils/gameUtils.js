@@ -67,7 +67,7 @@ angular.module('gameUtils', [])
 })
 .service('fiTurns', function (PHASE) {
     var that = this,
-        maxActions = 2;
+        maxActions = 3;
     this.turn = {};
     
     this.resetTurn = function(playerId) {
