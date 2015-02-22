@@ -3,6 +3,6 @@
     div(ng-repeat="token in tile.tokens")
         div(ng-class="token")
     h3(ng-bind="tile.relic" ng-if="tile.relic")
-    button(ng-click="moveHere()" ng-show="canMoveHere()") Move
-    button(ng-click="shoreUp()" ng-show="canShoreUp()") Shore
-    button(ng-click="takeRelic()" ng-show="canTakeRelic()") Relic
+    button.btn.btn-xs(ng-click="moveHere()" ng-show="canMoveHere()") Move
+    button.btn.btn-xs(ng-click="shoreUp()" ng-show="canShoreUp()") Shore
+    button.btn.btn-xs(ng-click="takeRelic()" ng-show="canTakeRelic()") Relic
